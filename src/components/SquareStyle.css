@@ -1,0 +1,10 @@
+.current-square {
+  background-color: rgb(93, 229, 183);
+  font-weight: bold;
+  color: white;
+}
+
+.red-line {
+  color: rgb(253, 228, 67);
+  background-color: #211818;
+}

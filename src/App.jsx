@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import "./App.css";
 import Square from "./components/Square";
+import StepBtn from "./components/StepBtn";
 function App() {
   function calculateWinner(squares) {
     const lines = [
@@ -29,7 +30,6 @@ function App() {
     return null;
   }
   const [board, setBoard] = useState(Array(9).fill(null));
-  // const [player, setPlayer] = useState("X");
   const [winner, setWinner] = useState(null);
   const [history, setHistory] = useState([Array(9).fill(null)]);
 
@@ -47,6 +47,7 @@ function App() {
       setIsDisabledRedline(false);
     }
   }, [stepNumber]);
+
   const player = stepNumber % 2 === 0 ? "X" : "O";
 
   const message =
@@ -73,6 +74,10 @@ function App() {
     if (currentWinner === "Draw") {
       setWinner(currentWinner);
     }
+    if (currentWinner === null) {
+      setWinner(null);
+    }
+
     if (stepNumber < history.length) {
       let historyCopy = history.slice(0, stepNumber + 1);
       setHistory([...historyCopy, boardCopy]);
@@ -80,7 +85,10 @@ function App() {
 
       let currentMoveCopy = currentMove.slice(0, stepNumber + 1);
       setCurrentMove([...currentMoveCopy, i]);
-      setRedLine([]);
+
+      if (currentWinner === null) {
+        setRedLine([]);
+      }
     } else {
       setHistory([...history, boardCopy]);
       setStepNumber(history.length);
@@ -102,6 +110,7 @@ function App() {
           }}
           isRed={redLine.includes(i)}
           isDisabledRedline={isDisabledRedline}
+          isCurrentMove={currentMove[stepNumber] === i}
         />
       );
     }
@@ -137,27 +146,14 @@ function App() {
     }
     return (
       <li key={move}>
-        {move === 0 ? (
-          <button
-            onClick={() => {
-              setBoard(Array(9).fill(null));
-              setStepNumber(move);
-              setRedLine([]);
-            }}
-          >
-            {" "}
-            {description}
-          </button>
-        ) : (
-          <button
-            onClick={() => {
-              setBoard(squares);
-              setStepNumber(move);
-            }}
-          >
-            {description}
-          </button>
-        )}
+        <StepBtn
+          setBoard={setBoard}
+          setStepNumber={setStepNumber}
+          squares={squares}
+          move={move}
+          description={description}
+          isCurrentMove={move === stepNumber && move > 0}
+        ></StepBtn>
       </li>
     );
   });
@@ -165,21 +161,36 @@ function App() {
   return (
     <>
       <div className="App">
-        <div className="Board">{rows}</div>
-        <div className="Info">
-          <div>{message}</div>
+        <div style={{ width: "8%" }}>
+          <div className="Board">{rows}</div>
+          <div className="Info">
+            <div>{message}</div>
+          </div>
         </div>
-        <div className="Sort">
-          <button
-            onClick={() => {
-              setIsAscending(!isAscending);
-            }}
-          >
-            Toggle Sort
-          </button>
-        </div>
+
         <div className="History">
-          <h3>History</h3>
+          <div className="history-header">
+            <h5>History</h5>
+            <div className="Sort">
+              <button
+                style={{
+                  padding: "0.5rem",
+                  borderRadius: "5px",
+                  backgroundColor: "white",
+                  color: "black",
+                  cursor: "pointer",
+                  width: "8rem",
+                  fontWeight: 400,
+                }}
+                onClick={() => {
+                  setIsAscending(!isAscending);
+                }}
+              >
+                {isAscending ? "Sort Descending" : "Sort Ascending"}
+              </button>
+            </div>
+          </div>
+
           <ol>{isAscending ? moves : moves.reverse()}</ol>
         </div>
       </div>

@@ -3,7 +3,7 @@
 }
 
 body {
-  font-family: sans-serif;
+  font-family: "Quicksand", sans-serif;
   margin: 20px;
   padding: 0;
 }
@@ -29,7 +29,6 @@ h4 {
 }
 
 h5 {
-  margin-top: 0;
   font-size: 14px;
 }
 
@@ -46,16 +45,6 @@ ul {
   padding-inline-start: 20px;
 }
 
-* {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: sans-serif;
-  margin: 20px;
-  padding: 0;
-}
-
 .square {
   background: #fff;
   border: 1px solid #999;
@@ -69,6 +58,7 @@ body {
   padding: 0;
   text-align: center;
   width: 34px;
+  font-family: "Quicksand", sans-serif;
 }
 
 .board-row:after {
@@ -89,8 +79,19 @@ body {
   margin-left: 20px;
 }
 
-.current-square {
-  background-color: aquamarine;
-  font-weight: bold;
-  color: white;
+.App {
+  display: flex;
+}
+
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.history-header > h5 {
+  margin-right: 1rem;
+}
+.History {
+  margin-left: 3rem;
+  width: 20%;
 }
